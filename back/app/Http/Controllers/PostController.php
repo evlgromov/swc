@@ -16,6 +16,7 @@ class PostController extends Controller
     public function index()
     {
         $items = Post::all();
+
         return response()->json([
             'status' => true,
             'posts' => PostResource::collection($items)
@@ -24,7 +25,7 @@ class PostController extends Controller
 
     public function show($id)
     {
-        $item = Post::find($id);
+        $item = Post::findOrFail($id);
 
         return response()->json([
             'status' => true,
@@ -45,6 +46,11 @@ class PostController extends Controller
                     'message' => $status ? 'Успешно' : 'Ошибка'
                 ], $status ? 201 : 500);
             }
+
         }
+
+        return response()->json([
+            'status' => false,
+        ], 422);
     }
 }
